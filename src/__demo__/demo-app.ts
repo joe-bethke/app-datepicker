@@ -17,37 +17,6 @@ import type { CustomEventDetail } from '../typings.js';
 
 @customElement('demo-app')
 export class DemoApp extends RootElement {
-  public static override styles = [
-    css`
-    :host {
-      display: block;
-
-      padding-bottom: 999px;
-    }
-    :host > * + * {
-      margin: 16px 0 0;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    app-date-picker {
-      border: 1px solid #000;
-    }
-    /* app-date-picker::part(today),
-    app-date-picker::part(today)::before,
-    app-date-picker::part(toyear)::before {
-      color: red;
-    } */
-
-    @media (prefers-color-scheme: dark) {
-      app-date-picker {
-        border-color: #fff;
-      }
-    }
-    `,
-  ];
   #dateUpdated = ({
     currentTarget,
     detail,
@@ -59,7 +28,6 @@ export class DemoApp extends RootElement {
       id,
     });
   };
-
   #showDialog = async (ev: MouseEvent) => {
     const { dataset } = ev.currentTarget as HTMLButtonElement;
     const dialog = this.query<AppDatePickerDialog>(`#${dataset.id}`);
@@ -76,14 +44,48 @@ export class DemoApp extends RootElement {
       valueAsNumber: new Date(dialog?.valueAsNumber as number),
     });
   };
+
   @state() _editable = false;
   @state() _outlined = false;
-
   @queryAsync(appDatePickerDialogName) dialog!: Promise<AppDatePickerDialog>;
 
   @queryAsync(appDatePickerDialogBaseName) dialogBase!: Promise<AppDatePickerDialogBase>;
 
   @queryAsync(appDatePickerInputName) input!: Promise<AppDatePickerInput>;
+
+  public static override get styles() {
+    return [
+      css`
+      :host {
+        display: block;
+  
+        padding-bottom: 999px;
+      }
+      :host > * + * {
+        margin: 16px 0 0;
+      }
+  
+      * {
+        box-sizing: border-box;
+      }
+  
+      app-date-picker {
+        border: 1px solid #000;
+      }
+      /* app-date-picker::part(today),
+      app-date-picker::part(today)::before,
+      app-date-picker::part(toyear)::before {
+        color: red;
+      } */
+  
+      @media (prefers-color-scheme: dark) {
+        app-date-picker {
+          border-color: #fff;
+        }
+      }
+      `,
+    ];
+  }
 
   protected override firstUpdated(_changedProperties: Map<number | string | symbol, unknown>): void {
       Object.defineProperty(globalThis, '__demoApp', {

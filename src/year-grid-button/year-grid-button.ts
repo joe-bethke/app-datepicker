@@ -5,8 +5,10 @@ import { ElementMixin } from '../mixins/element-mixin.js';
 import { yearGridButtonStyling } from './stylings.js';
 
 export class YearGridButton extends ElementMixin(ButtonBase) {
-  static override styles = [
-    styles,
-    yearGridButtonStyling,
-  ];
+  static override get styles() {
+    return [
+      styles,
+      yearGridButtonStyling,
+    ];
+  }
 }

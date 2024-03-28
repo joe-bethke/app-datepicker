@@ -3,7 +3,7 @@ import '@material/mwc-dialog';
 import '../date-picker/app-date-picker.js';
 import './app-date-picker-dialog-base.js';
 
-import { html, nothing, type TemplateResult  } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property, queryAsync, state } from 'lit/decorators.js';
 
 import type { AppDatePicker } from '../date-picker/app-date-picker.js';
@@ -20,11 +20,6 @@ import { datePickerDialogStyling } from './stylings.js';
 import type { DatePickerDialogChangedProperties, DatePickerDialogProperties, DialogClosedEventDetail, DialogClosingEventDetail } from './typings.js';
 
 export class DatePickerDialog extends DatePickerMixin(DatePickerMinMaxMixin(RootElement)) implements DatePickerDialogProperties {
-  public static override styles = [
-    baseStyling,
-    datePickerDialogStyling,
-  ];
-
   #isResetAction = false;
 
   #onClosed = async (ev: CustomEvent<DialogClosedEventDetail>): Promise<void> => {
@@ -34,6 +29,7 @@ export class DatePickerDialog extends DatePickerMixin(DatePickerMinMaxMixin(Root
     datePicker && (datePicker.startView = 'calendar');
     this.fire({ detail: ev.detail, type: 'closed' });
   };
+
   #onClosing = ({
     detail,
   }: CustomEvent<DialogClosingEventDetail>): void => {
@@ -58,11 +54,10 @@ export class DatePickerDialog extends DatePickerMixin(DatePickerMinMaxMixin(Root
     this.value = undefined;
   };
   #selectedDate: Date;
-
   #valueAsDate: Date;
+
   @queryAsync(appDatePickerName) private _datePicker!: Promise<AppDatePicker>;
   @state() private _rendered = false;
-
   @property({ type: String }) public confirmLabel = 'set';
 
   @property({ type: String }) public dismissLabel = 'cancel';
@@ -75,6 +70,13 @@ export class DatePickerDialog extends DatePickerMixin(DatePickerMinMaxMixin(Root
     super();
 
     this.#selectedDate = this.#valueAsDate = toResolvedDate();
+  }
+
+  public static override get styles() {
+    return [
+      baseStyling,
+      datePickerDialogStyling,
+    ];
   }
 
   protected $onDatePickerDateUpdated({

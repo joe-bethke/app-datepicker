@@ -34,13 +34,6 @@ import { datePickerStyling } from './stylings.js';
 import type { DatePickerChangedProperties } from './typings.js';
 
 export class DatePicker extends DatePickerMixin(DatePickerMinMaxMixin(RootElement)) implements DatePickerProperties {
-  public static override styles = [
-    baseStyling,
-    resetShadowRoot,
-    datePickerStyling,
-    webkitScrollbarStyling,
-  ];
-
   #focusNavButtonWithKey = false;
 
   #formatters: Formatters;
@@ -230,10 +223,10 @@ export class DatePicker extends DatePickerMixin(DatePickerMinMaxMixin(RootElemen
     this._currentDate = new Date(this._currentDate.setUTCFullYear(year));
     this.startView = 'calendar';
   };
+
   #valueAsDate: Date;
   @state() private _currentDate: Date;
   @state() private _max: Date;
-
   @state() private _min: Date;
 
   @queryAsync('app-month-calendar') private readonly _monthCalendar!: Promise<AppMonthCalendar | null>;
@@ -260,6 +253,15 @@ export class DatePicker extends DatePickerMixin(DatePickerMinMaxMixin(RootElemen
     this._currentDate = new Date(todayDate);
     this.#formatters = toFormatters(this.locale);
     this.#valueAsDate = new Date(todayDate);
+  }
+
+  public static override get styles() {
+    return [
+      baseStyling,
+      resetShadowRoot,
+      datePickerStyling,
+      webkitScrollbarStyling,
+    ];
   }
 
   protected override async firstUpdated(): Promise<void> {

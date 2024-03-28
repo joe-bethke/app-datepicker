@@ -27,13 +27,7 @@ import { datePickerInputStyling } from './stylings.js';
 import type { DatePickerInputProperties } from './typings.js';
 
 export class DatePickerInput extends ElementMixin(DatePickerMixin(DatePickerMinMaxMixin(TextField))) implements DatePickerInputProperties {
-  public static override styles = [
-    ...TextField.styles,
-    baseStyling,
-    datePickerInputStyling,
-  ];
   #disconnect: () => void = () => undefined;
-
   #focusElement: HTMLElement | undefined = undefined;
 
   /* c8 ignore start */
@@ -73,6 +67,7 @@ export class DatePickerInput extends ElementMixin(DatePickerMixin(DatePickerMinM
   };
 
   #lazyLoading = false;
+
   #onClosed = ({ detail }: CustomEvent): void => {
     this._open = false;
     this.fire({ detail, type: 'closed' });
@@ -122,7 +117,6 @@ export class DatePickerInput extends ElementMixin(DatePickerMixin(DatePickerMinM
     this.reset();
   };
   #picker: AppDatePicker | undefined = undefined;
-
   #updateValues = (value: Date | string): void => {
     if (value) {
       const valueDate = new Date(value);
@@ -133,12 +127,12 @@ export class DatePickerInput extends ElementMixin(DatePickerMixin(DatePickerMinM
       this.reset();
     }
   };
+
   #valueAsDate: Date | undefined;
   #valueFormatter = this.$toValueFormatter();
   @state() private _disabled = false;
   @state() private _lazyLoaded = false;
   @state() private _open = false;
-
   @queryAsync('.mdc-text-field__input') protected $input!: Promise<HTMLInputElement | null>;
 
   @queryAsync(appDatePickerInputSurfaceName) protected $inputSurface!: Promise<AppDatePickerInputSurface | null>;
@@ -150,6 +144,14 @@ export class DatePickerInput extends ElementMixin(DatePickerMixin(DatePickerMinM
   public override iconTrailing = 'clear';
 
   public override type = appDatePickerInputType;
+
+  public static override get styles() {
+    return [
+      ...TextField.styles,
+      baseStyling,
+      datePickerInputStyling,
+    ];
+  }
 
   protected $renderContent(): TemplateResult {
     warnUndefinedElement(appDatePickerInputSurfaceName);

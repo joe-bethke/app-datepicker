@@ -17,24 +17,14 @@ import { monthCalendarStyling } from './stylings.js';
 import type { MonthCalendarData, MonthCalendarProperties, MonthCalendarRenderCalendarDayInit } from './typings.js';
 
 export class MonthCalendar extends RootElement implements MonthCalendarProperties {
-  public static override shadowRootOptions = {
-    ...RootElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-  public static override styles = [
-    baseStyling,
-    resetShadowRoot,
-    monthCalendarStyling,
-  ];
-
   #selectedDate: Date | undefined = undefined;
+
   /**
    * NOTE(motss): This is required to avoid selected date being focused on each update.
    * Selected date should ONLY be focused during navigation with keyboard, e.g.
    * initial render, switching between views, etc.
    */
   #shouldFocusSelectedDate = false;
-
   #updateSelectedDate = (event: KeyboardEvent): void => {
     const key = event.key as SupportedKey;
     const type = event.type as 'click' | 'keydown' | 'keyup';
@@ -130,7 +120,6 @@ export class MonthCalendar extends RootElement implements MonthCalendarPropertie
      */
     this.#selectedDate = undefined;
   };
-
   @property({ attribute: false }) public data?: MonthCalendarData;
 
   @queryAsync('.calendar-day[aria-selected="true"]') public selectedCalendarDay!: Promise<HTMLTableCellElement | null>;
@@ -156,6 +145,21 @@ export class MonthCalendar extends RootElement implements MonthCalendarPropertie
       todayLabel: labelToday,
       weekdays: [],
     };
+  }
+
+  public static override get shadowRootOptions() {
+    return {
+      ...RootElement.shadowRootOptions,
+      delegatesFocus: true,
+    };
+  }
+
+  public static override get styles() {
+    return [
+      baseStyling,
+      resetShadowRoot,
+      monthCalendarStyling,
+    ];
   }
 
   protected $renderCalendarDay({

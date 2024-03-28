@@ -5,9 +5,11 @@ import { resetShadowRoot } from '../stylings.js';
 import { datePickerDialogBaseStyling } from './stylings.js';
 
 export class DatePickerDialogBase extends ElementMixin(Dialog) {
-  public static override styles = [
-    ...Dialog.styles,
-    resetShadowRoot,
-    datePickerDialogBaseStyling,
-  ];
+  public static override get styles() {
+    return [
+      ...Dialog.styles,
+      resetShadowRoot,
+      datePickerDialogBaseStyling,
+    ];
+  }
 }

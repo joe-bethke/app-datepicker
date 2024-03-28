@@ -14,14 +14,8 @@ import { toNextSelectedYear } from './to-next-selected-year.js';
 import type { YearGridChangedProperties, YearGridData, YearGridProperties, YearGridRenderButtonInit } from './typings.js';
 
 export class YearGrid extends RootElement implements YearGridProperties {
-  public static override styles = [
-    baseStyling,
-    resetButton,
-    resetShadowRoot,
-    yearGridStyling,
-  ];
-
   #todayYear: number;
+
   #updateYear = (event: KeyboardEvent): void => {
     if (event.type === 'keydown') {
       /**
@@ -77,7 +71,6 @@ export class YearGrid extends RootElement implements YearGridProperties {
       });
     }
   };
-
   @state() protected $focusingYear: number;
 
   @property({ attribute: false }) public data: YearGridData;
@@ -101,6 +94,15 @@ export class YearGrid extends RootElement implements YearGridProperties {
     };
 
     this.$focusingYear = this.#todayYear = todayDate.getUTCFullYear();
+  }
+
+  public static override get styles() {
+    return [
+      baseStyling,
+      resetButton,
+      resetShadowRoot,
+      yearGridStyling,
+    ];
   }
 
   protected $renderButton({

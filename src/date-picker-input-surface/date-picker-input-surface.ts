@@ -13,12 +13,14 @@ const alwaysOpenElementSet = new Set([
 ]);
 
 export class DatePickerInputSurface extends ElementMixin(MenuSurface) {
-  public static override styles = [
-    ...MenuSurface.styles,
-    baseStyling,
-    resetShadowRoot,
-    DatePickerInputSurfaceStyling,
-  ];
+  public static override get styles() {
+    return [
+      ...MenuSurface.styles,
+      baseStyling,
+      resetShadowRoot,
+      DatePickerInputSurfaceStyling,
+    ];
+  }
 
   protected override onBodyClick(ev: MouseEvent) {
     const elements =
